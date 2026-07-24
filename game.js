@@ -1324,9 +1324,17 @@ canvas.addEventListener(
         }
 
 
+        // ========================================
+        // START HOLDING FIRE
+        // ========================================
+
         mouseDown =
             true;
 
+
+        // ========================================
+        // FIRE IMMEDIATELY
+        // ========================================
 
         shoot();
 
@@ -1416,14 +1424,40 @@ function shoot() {
 setInterval(
     function() {
 
+        // ========================================
+        // ONLY FIRE WHILE MOUSE IS HELD
+        // ========================================
+
         if (
-            mouseDown &&
-            gameRunning
+            !mouseDown
         ) {
 
-            shoot();
+            return;
 
         }
+
+
+        // ========================================
+        // STOP FIRING IF ROUND IS NOT ACTIVE
+        // ========================================
+
+        if (
+            !gameRunning
+        ) {
+
+            mouseDown =
+                false;
+
+            return;
+
+        }
+
+
+        // ========================================
+        // FIRE AT FIXED FIRE RATE
+        // ========================================
+
+        shoot();
 
     },
     250
