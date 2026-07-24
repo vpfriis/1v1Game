@@ -24,8 +24,6 @@ const io =
 // ========================================
 // SERVE WEBSITE
 // ========================================
-// Your index.html, game.js and style.css
-// are directly in the main repository folder.
 
 app.use(
     express.static(
@@ -59,6 +57,16 @@ const MAP_WIDTH =
 
 const MAP_HEIGHT =
     650;
+
+
+// ========================================
+// FIRE RATE
+// ========================================
+// 100ms between shots
+// = maximum 10 shots per second
+
+const FIRE_RATE =
+    100;
 
 
 // ========================================
@@ -594,6 +602,14 @@ io.on(
 
 
         // ========================================
+        // FIRE RATE TRACKING
+        // ========================================
+
+        socket.lastShotTime =
+            0;
+
+
+        // ========================================
         // CREATE LOBBY
         // ========================================
 
@@ -603,6 +619,7 @@ io.on(
 
                 let username =
                     "Player";
+
 
                 if (
                     data &&
@@ -615,12 +632,15 @@ io.on(
 
                 }
 
+
                 socket.username =
                     cleanUsername(
                         username
                     );
 
+
                 let code;
+
 
                 do {
 
@@ -632,6 +652,7 @@ io.on(
                         code
                     )
                 );
+
 
                 const host = {
 
@@ -646,6 +667,7 @@ io.on(
 
                 };
 
+
                 const lobby = {
 
                     hostId:
@@ -658,17 +680,21 @@ io.on(
 
                 };
 
+
                 lobbies.set(
                     code,
                     lobby
                 );
 
+
                 socket.join(
                     code
                 );
 
+
                 socket.lobbyCode =
                     code;
+
 
                 socket.emit(
                     "lobbyCreated",
@@ -703,6 +729,7 @@ io.on(
                 let username =
                     "Player";
 
+
                 if (
                     data &&
                     typeof data ===
@@ -722,6 +749,7 @@ io.on(
 
                 }
 
+
                 code =
                     String(
                         code || ""
@@ -729,15 +757,18 @@ io.on(
                     .trim()
                     .toUpperCase();
 
+
                 socket.username =
                     cleanUsername(
                         username
                     );
 
+
                 const lobby =
                     lobbies.get(
                         code
                     );
+
 
                 if (
                     !lobby
@@ -751,6 +782,7 @@ io.on(
                     return;
 
                 }
+
 
                 if (
                     lobby.players.length >=
@@ -766,6 +798,7 @@ io.on(
 
                 }
 
+
                 const player = {
 
                     id:
@@ -779,16 +812,20 @@ io.on(
 
                 };
 
+
                 lobby.players.push(
                     player
                 );
+
 
                 socket.join(
                     code
                 );
 
+
                 socket.lobbyCode =
                     code;
+
 
                 socket.emit(
                     "lobbyJoined",
@@ -804,6 +841,7 @@ io.on(
 
                     }
                 );
+
 
                 io.to(
                     code
@@ -845,10 +883,12 @@ io.on(
                 const code =
                     socket.lobbyCode;
 
+
                 const lobby =
                     lobbies.get(
                         code
                     );
+
 
                 if (
                     !lobby
@@ -857,6 +897,7 @@ io.on(
                     return;
 
                 }
+
 
                 if (
                     lobby.hostId !==
@@ -867,6 +908,7 @@ io.on(
 
                 }
 
+
                 if (
                     lobby.players.length !==
                     2
@@ -875,6 +917,7 @@ io.on(
                     return;
 
                 }
+
 
                 createGame(
                     code,
@@ -896,6 +939,7 @@ io.on(
                 const gameCode =
                     socket.gameCode;
 
+
                 if (
                     !gameCode
                 ) {
@@ -904,10 +948,12 @@ io.on(
 
                 }
 
+
                 const game =
                     games.get(
                         gameCode
                     );
+
 
                 if (
                     !game
@@ -917,6 +963,7 @@ io.on(
 
                 }
 
+
                 if (
                     !game.roundActive
                 ) {
@@ -925,10 +972,12 @@ io.on(
 
                 }
 
+
                 const player =
                     game.players[
                         socket.id
                     ];
+
 
                 if (
                     !player
@@ -938,21 +987,25 @@ io.on(
 
                 }
 
+
                 let dx =
                     Number(
                         data.dx
                     ) || 0;
+
 
                 let dy =
                     Number(
                         data.dy
                     ) || 0;
 
+
                 const length =
                     Math.sqrt(
                         dx * dx +
                         dy * dy
                     );
+
 
                 if (
                     length > 0
@@ -966,23 +1019,28 @@ io.on(
 
                 }
 
+
                 const speed =
                     5;
+
 
                 const newX =
                     player.x +
                     dx *
                     speed;
 
+
                 const newY =
                     player.y +
                     dy *
                     speed;
 
+
                 const currentMap =
                     maps[
                         game.mapIndex
                     ];
+
 
                 if (
                     !collidesWithWall(
@@ -997,6 +1055,7 @@ io.on(
                         newX;
 
                 }
+
 
                 if (
                     !collidesWithWall(
@@ -1027,10 +1086,12 @@ io.on(
                 const gameCode =
                     socket.gameCode;
 
+
                 const game =
                     games.get(
                         gameCode
                     );
+
 
                 if (
                     !game ||
@@ -1041,10 +1102,12 @@ io.on(
 
                 }
 
+
                 const player =
                     game.players[
                         socket.id
                     ];
+
 
                 if (
                     !player
@@ -1054,10 +1117,39 @@ io.on(
 
                 }
 
+
+                // ========================================
+                // FIRE RATE LIMIT
+                // ========================================
+
+                const now =
+                    Date.now();
+
+
+                if (
+                    now -
+                    socket.lastShotTime <
+                    FIRE_RATE
+                ) {
+
+                    return;
+
+                }
+
+
+                socket.lastShotTime =
+                    now;
+
+
+                // ========================================
+                // GET AIM ANGLE
+                // ========================================
+
                 const angle =
                     Number(
                         data.angle
                     );
+
 
                 if (
                     !Number.isFinite(
@@ -1069,8 +1161,18 @@ io.on(
 
                 }
 
+
+                // ========================================
+                // BULLET SPEED
+                // ========================================
+
                 const speed =
                     12;
+
+
+                // ========================================
+                // CREATE BULLET
+                // ========================================
 
                 game.bullets.push({
 
@@ -1121,6 +1223,7 @@ io.on(
                             socket.gameCode
                         );
 
+
                     if (
                         game
                     ) {
@@ -1131,16 +1234,19 @@ io.on(
                             "playerLeftGame"
                         );
 
+
                         games.delete(
                             socket.gameCode
                         );
 
                     }
 
+
                     socket.gameCode =
                         null;
 
                 }
+
 
                 leaveLobby(
                     socket
@@ -1174,6 +1280,7 @@ function circleRectCollision(
             )
         );
 
+
     const closestY =
         Math.max(
             wall.y,
@@ -1184,13 +1291,16 @@ function circleRectCollision(
             )
         );
 
+
     const dx =
         x -
         closestX;
 
+
     const dy =
         y -
         closestY;
+
 
     return (
         dx * dx +
@@ -1287,6 +1397,7 @@ function createGame(
 
     };
 
+
     lobby.players.forEach(
         (
             player,
@@ -1295,6 +1406,7 @@ function createGame(
 
             const spawn =
                 maps[0].spawns[index];
+
 
             game.players[
                 player.id
@@ -1333,10 +1445,12 @@ function createGame(
         }
     );
 
+
     games.set(
         code,
         game
     );
+
 
     lobby.players.forEach(
         player => {
@@ -1346,6 +1460,7 @@ function createGame(
                     player.id
                 );
 
+
             if (
                 playerSocket
             ) {
@@ -1353,16 +1468,21 @@ function createGame(
                 playerSocket.gameCode =
                     code;
 
+                playerSocket.lastShotTime =
+                    0;
+
             }
 
         }
     );
+
 
     io.to(
         code
     ).emit(
         "matchStarted"
     );
+
 
     startRoundCountdown(
         code
@@ -1384,6 +1504,7 @@ function startRoundCountdown(
             code
         );
 
+
     if (
         !game
     ) {
@@ -1391,6 +1512,7 @@ function startRoundCountdown(
         return;
 
     }
+
 
     if (
         game.roundStarting
@@ -1400,8 +1522,10 @@ function startRoundCountdown(
 
     }
 
+
     game.roundStarting =
         true;
+
 
     game.roundActive =
         false;
@@ -1415,10 +1539,12 @@ function startRoundCountdown(
         game.roundNumber %
         maps.length;
 
+
     const currentMap =
         maps[
             game.mapIndex
         ];
+
 
     game.roundNumber++;
 
@@ -1440,6 +1566,7 @@ function startRoundCountdown(
             game.players
         );
 
+
     playerIds.forEach(
         (
             id,
@@ -1451,25 +1578,57 @@ function startRoundCountdown(
                     id
                 ];
 
+
             const spawn =
                 currentMap.spawns[
                     index
                 ];
 
+
             player.health =
                 100;
+
 
             player.x =
                 spawn.x;
 
+
             player.y =
                 spawn.y;
+
 
             player.spawnX =
                 spawn.x;
 
+
             player.spawnY =
                 spawn.y;
+
+        }
+    );
+
+
+    // ========================================
+    // RESET FIRE RATE
+    // ========================================
+
+    playerIds.forEach(
+        id => {
+
+            const playerSocket =
+                io.sockets.sockets.get(
+                    id
+                );
+
+
+            if (
+                playerSocket
+            ) {
+
+                playerSocket.lastShotTime =
+                    0;
+
+            }
 
         }
     );
@@ -1520,6 +1679,7 @@ function startRoundCountdown(
 
             }
 
+
             io.to(
                 code
             ).emit(
@@ -1549,6 +1709,7 @@ function startRoundCountdown(
 
             }
 
+
             io.to(
                 code
             ).emit(
@@ -1573,6 +1734,7 @@ function startRoundCountdown(
                     code
                 );
 
+
             if (
                 !currentGame
             ) {
@@ -1581,11 +1743,14 @@ function startRoundCountdown(
 
             }
 
+
             currentGame.roundStarting =
                 false;
 
+
             currentGame.roundActive =
                 true;
+
 
             io.to(
                 code
@@ -1618,6 +1783,7 @@ setInterval(
                     game,
                     code
                 );
+
 
                 io.to(
                     code
@@ -1662,10 +1828,12 @@ function updateBullets(
 
     }
 
+
     const currentMap =
         maps[
             game.mapIndex
         ];
+
 
     game.bullets =
         game.bullets.filter(
@@ -1678,6 +1846,7 @@ function updateBullets(
                 const newX =
                     bullet.x +
                     bullet.vx;
+
 
                 const newY =
                     bullet.y +
@@ -1719,6 +1888,7 @@ function updateBullets(
 
                     bullet.bounces++;
 
+
                     console.log(
                         "BULLET WALL HIT:",
                         bullet.bounces
@@ -1737,6 +1907,7 @@ function updateBullets(
                         console.log(
                             "BULLET DISAPPEARED AFTER 4 WALL HITS"
                         );
+
 
                         return false;
 
@@ -1778,6 +1949,7 @@ function updateBullets(
                     bullet.x +=
                         bullet.vx;
 
+
                     bullet.y +=
                         bullet.vy;
 
@@ -1795,6 +1967,7 @@ function updateBullets(
                             )
                         );
 
+
                     bullet.y =
                         Math.max(
                             21,
@@ -1803,6 +1976,7 @@ function updateBullets(
                                 bullet.y
                             )
                         );
+
 
                     return true;
 
@@ -1815,6 +1989,7 @@ function updateBullets(
 
                 bullet.x =
                     newX;
+
 
                 bullet.y =
                     newY;
@@ -1871,9 +2046,11 @@ function updateBullets(
                         bullet.x -
                         player.x;
 
+
                     const dy =
                         bullet.y -
                         player.y;
+
 
                     const distance =
                         Math.sqrt(
@@ -1924,6 +2101,7 @@ function updateBullets(
 
                             game.roundActive =
                                 false;
+
 
                             game.roundStarting =
                                 false;
@@ -1985,6 +2163,7 @@ function updateBullets(
                                         game.players[
                                             playerId
                                         ];
+
 
                                     p.health =
                                         100;
@@ -2056,6 +2235,7 @@ function leaveLobby(
     const code =
         socket.lobbyCode;
 
+
     if (
         !code
     ) {
@@ -2064,10 +2244,12 @@ function leaveLobby(
 
     }
 
+
     const lobby =
         lobbies.get(
             code
         );
+
 
     if (
         !lobby
@@ -2102,15 +2284,18 @@ function leaveLobby(
 
         }
 
+
         socket.to(
             code
         ).emit(
             "hostLeft"
         );
 
+
         lobbies.delete(
             code
         );
+
 
         io.in(
             code
@@ -2118,8 +2303,10 @@ function leaveLobby(
             code
         );
 
+
         socket.lobbyCode =
             null;
+
 
         return;
 
@@ -2137,12 +2324,15 @@ function leaveLobby(
                 socket.id
         );
 
+
     socket.leave(
         code
     );
 
+
     socket.lobbyCode =
         null;
+
 
     io.to(
         code
@@ -2165,10 +2355,6 @@ function leaveLobby(
 // START SERVER
 // ========================================
 
-// Render provides the PORT
-// through process.env.PORT.
-// Local computer uses port 3000.
-
 const PORT =
     process.env.PORT ||
     3000;
@@ -2182,13 +2368,17 @@ server.listen(
             "================================"
         );
 
+
         console.log(
             "1V1 GAME SERVER ONLINE"
         );
 
+
         console.log(
-            `PORT: ${PORT}`
+            "PORT:",
+            PORT
         );
+
 
         console.log(
             "================================"
