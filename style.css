@@ -1,0 +1,888 @@
+/* ========================================
+   GENERAL PAGE
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #25253d 0%,
+            #101018 70%
+        );
+
+    color: white;
+
+}
+
+
+/* ========================================
+   MENU
+======================================== */
+
+.menu {
+
+    width: 420px;
+
+    padding: 50px 40px;
+
+    text-align: center;
+
+    background:
+        rgba(
+            20,
+            20,
+            35,
+            0.95
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.1
+        );
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(
+            0,
+            0,
+            0,
+            0.6
+        );
+
+}
+
+
+/* ========================================
+   TITLE
+======================================== */
+
+h1 {
+
+    margin: 0;
+
+    font-size: 42px;
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 0 20px
+        rgba(
+            255,
+            70,
+            70,
+            0.5
+        );
+
+}
+
+
+/* ========================================
+   SUBTITLE
+======================================== */
+
+.subtitle {
+
+    margin-top: 10px;
+
+    margin-bottom: 40px;
+
+    color: #aaa;
+
+    font-size: 16px;
+
+}
+
+
+/* ========================================
+   BUTTONS
+======================================== */
+
+.menu button {
+
+    width: 100%;
+
+    height: 60px;
+
+    margin-top: 15px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition:
+
+        transform 0.15s,
+
+        filter 0.15s,
+
+        box-shadow 0.15s;
+
+}
+
+
+/* ========================================
+   SAVE USERNAME
+======================================== */
+
+#saveUsernameButton {
+
+    background:
+        linear-gradient(
+            135deg,
+            #2ed573,
+            #159957
+        );
+
+    box-shadow:
+        0 6px 0
+        #0e6b3c;
+
+}
+
+
+/* ========================================
+   CREATE LOBBY
+======================================== */
+
+#createLobbyButton {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff4757,
+            #c92838
+        );
+
+    box-shadow:
+        0 6px 0
+        #8e1e2a;
+
+}
+
+
+/* ========================================
+   JOIN LOBBY
+======================================== */
+
+#joinLobbyButton,
+#joinButton {
+
+    background:
+        linear-gradient(
+            135deg,
+            #3478f6,
+            #2455b5
+        );
+
+    box-shadow:
+        0 6px 0
+        #173979;
+
+}
+
+
+/* ========================================
+   HOVER
+======================================== */
+
+.menu button:hover {
+
+    filter:
+        brightness(
+            1.15
+        );
+
+    transform:
+        translateY(
+            -2px
+        );
+
+}
+
+
+/* ========================================
+   PRESS
+======================================== */
+
+.menu button:active {
+
+    transform:
+        translateY(
+            4px
+        );
+
+    box-shadow:
+        none;
+
+}
+
+
+/* ========================================
+   HIDDEN
+======================================== */
+
+.hidden {
+
+    display:
+        none !important;
+
+}
+
+
+/* ========================================
+   LOBBY CODE
+======================================== */
+
+.lobbyCodeTitle {
+
+    margin-top: 20px;
+
+    color: #888;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+}
+
+
+.lobbyCode {
+
+    margin-top: 10px;
+
+    margin-bottom: 25px;
+
+    font-size: 42px;
+
+    font-weight: bold;
+
+    letter-spacing: 8px;
+
+    color: white;
+
+    text-shadow:
+        0 0 20px
+        rgba(
+            255,
+            71,
+            87,
+            0.6
+        );
+
+}
+
+
+/* ========================================
+   COPY CODE
+======================================== */
+
+#copyCodeButton {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff4757,
+            #c92838
+        );
+
+    box-shadow:
+        0 6px 0
+        #8e1e2a;
+
+}
+
+
+/* ========================================
+   PLAYERS
+======================================== */
+
+.playersTitle {
+
+    margin-top: 35px;
+
+    margin-bottom: 10px;
+
+    color: #888;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+}
+
+
+.playersList {
+
+    width: 100%;
+
+    min-height: 80px;
+
+    padding: 10px;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            0.2
+        );
+
+    border-radius: 12px;
+
+}
+
+
+.playerEntry {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding:
+        12px
+        15px;
+
+    margin-bottom: 6px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.05
+        );
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+}
+
+
+.playerEntry:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+.hostBadge {
+
+    color:
+        #ffcc4d;
+
+    font-size:
+        12px;
+
+    font-weight:
+        bold;
+
+}
+
+
+/* ========================================
+   START MATCH
+======================================== */
+
+.startMatchButton {
+
+    background:
+        linear-gradient(
+            135deg,
+            #2ed573,
+            #159957
+        );
+
+    box-shadow:
+        0 6px 0
+        #0e6b3c;
+
+}
+
+
+/* ========================================
+   WAITING
+======================================== */
+
+.waitingText {
+
+    margin-top: 25px;
+
+    color: #aaa;
+
+    font-size: 16px;
+
+}
+
+
+/* ========================================
+   BACK BUTTON
+======================================== */
+
+.backButton {
+
+    margin-top: 20px;
+
+    background:
+        #333344;
+
+    box-shadow:
+        0 6px 0
+        #20202c;
+
+}
+
+
+/* ========================================
+   JOIN INPUT
+======================================== */
+
+#lobbyCodeInput {
+
+    width: 100%;
+
+    height: 60px;
+
+    margin-top: 5px;
+
+    padding:
+        0
+        20px;
+
+    border:
+        2px solid
+        #333344;
+
+    border-radius:
+        12px;
+
+    outline:
+        none;
+
+    background:
+        #151522;
+
+    color:
+        white;
+
+    text-align:
+        center;
+
+    font-size:
+        24px;
+
+    font-weight:
+        bold;
+
+    letter-spacing:
+        5px;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+#lobbyCodeInput:focus {
+
+    border-color:
+        #3478f6;
+
+    box-shadow:
+        0 0 15px
+        rgba(
+            52,
+            120,
+            246,
+            0.3
+        );
+
+}
+
+
+/* ========================================
+   JOIN MESSAGE
+======================================== */
+
+.joinMessage {
+
+    min-height:
+        24px;
+
+    margin-top:
+        20px;
+
+    font-size:
+        15px;
+
+    font-weight:
+        bold;
+
+    color:
+        #ff6b6b;
+
+}
+
+
+/* ========================================
+   GAME SCREEN
+======================================== */
+
+#gameScreen {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    background:
+        #090b12;
+
+    z-index:
+        100;
+
+}
+
+
+/* ========================================
+   GAME TOP BAR
+======================================== */
+
+#gameTopBar {
+
+    width:
+        1000px;
+
+    height:
+        60px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        0 25px;
+
+    background:
+        #151923;
+
+    border:
+        1px solid
+        #2c3240;
+
+    border-bottom:
+        none;
+
+    border-radius:
+        12px 12px 0 0;
+
+}
+
+
+#playerOneHealth {
+
+    color:
+        #ff4757;
+
+    font-weight:
+        bold;
+
+}
+
+
+#playerTwoHealth {
+
+    color:
+        #3478f6;
+
+    font-weight:
+        bold;
+
+}
+
+
+#gameStatus {
+
+    color:
+        #ffffff;
+
+    font-size:
+        20px;
+
+    font-weight:
+        bold;
+
+    letter-spacing:
+        2px;
+
+}
+
+
+/* ========================================
+   GAME CANVAS
+======================================== */
+
+#gameCanvas {
+
+    display:
+        block;
+
+    width:
+        1000px;
+
+    height:
+        650px;
+
+    background:
+        #18202b;
+
+    border:
+        2px solid
+        #343c4d;
+
+    box-shadow:
+        0 20px 60px
+        rgba(
+            0,
+            0,
+            0,
+            0.6
+        );
+
+    cursor:
+        crosshair;
+
+}
+
+
+/* ========================================
+   CONTROLS
+======================================== */
+
+#controlsText {
+
+    width:
+        1000px;
+
+    padding:
+        12px;
+
+    text-align:
+        center;
+
+    color:
+        #777;
+
+    font-size:
+        12px;
+
+    background:
+        #151923;
+
+    border-radius:
+        0 0 12px 12px;
+
+}
+
+
+/* ========================================
+   USERNAME INPUT
+======================================== */
+
+#usernameInput {
+
+    width:
+        280px;
+
+    height:
+        50px;
+
+    box-sizing:
+        border-box;
+
+    margin-bottom:
+        15px;
+
+    padding:
+        0 18px;
+
+    background:
+        #1f2735;
+
+    border:
+        2px solid
+        #3d4b63;
+
+    border-radius:
+        10px;
+
+    color:
+        #ffffff;
+
+    font-size:
+        16px;
+
+    font-weight:
+        bold;
+
+    text-align:
+        center;
+
+    outline:
+        none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+/* ========================================
+   PLACEHOLDER
+======================================== */
+
+#usernameInput::placeholder {
+
+    color:
+        #8d98aa;
+
+    font-weight:
+        bold;
+
+    opacity:
+        1;
+
+}
+
+
+/* ========================================
+   WHEN CLICKED
+======================================== */
+
+#usernameInput:focus {
+
+    background:
+        #252f40;
+
+    border-color:
+        #3478f6;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            52,
+            120,
+            246,
+            0.15
+        ),
+
+        0 0 20px
+        rgba(
+            52,
+            120,
+            246,
+            0.15
+        );
+
+}
+
+
+/* ========================================
+   HOVER
+======================================== */
+
+#usernameInput:hover {
+
+    border-color:
+        #52627d;
+
+}
+
+
+/* ========================================
+   USERNAME LABEL
+======================================== */
+
+#usernameInput::before {
+
+    content:
+        "";
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+
+    #usernameInput {
+
+        width:
+            100%;
+
+        max-width:
+            280px;
+
+    }
+
+}

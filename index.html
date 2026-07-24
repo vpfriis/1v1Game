@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>1V1 Game</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================================
+         MAIN MENU
+    ========================================= -->
+
+    <div
+        class="menu"
+        id="mainMenu"
+    >
+
+        <h1>🔫 1V1 GAME</h1>
+
+        <p class="subtitle">
+            Top-Down Multiplayer Shooter
+        </p>
+
+
+        <!-- USERNAME SECTION -->
+
+        <div class="usernameSection">
+
+            <label for="usernameInput">
+                YOUR USERNAME
+            </label>
+
+            <input
+                type="text"
+                id="usernameInput"
+                placeholder="Enter username"
+                maxlength="16"
+                autocomplete="off"
+            >
+
+            <button id="saveUsernameButton">
+                💾 SAVE USERNAME
+            </button>
+
+            <p
+                id="usernameMessage"
+                class="usernameMessage"
+            ></p>
+
+        </div>
+
+
+        <button id="createLobbyButton">
+            ➕ CREATE LOBBY
+        </button>
+
+
+        <button id="joinLobbyButton">
+            🔗 JOIN LOBBY
+        </button>
+
+    </div>
+
+
+
+    <!-- ========================================
+         LOBBY MENU
+    ========================================= -->
+
+    <div
+        class="menu hidden"
+        id="lobbyMenu"
+    >
+
+        <h1>
+            GAME LOBBY
+        </h1>
+
+        <p class="subtitle">
+            Share this code with your opponent
+        </p>
+
+
+        <div class="lobbyCodeTitle">
+            LOBBY CODE
+        </div>
+
+
+        <div
+            class="lobbyCode"
+            id="lobbyCode"
+        >
+            ------
+        </div>
+
+
+        <button id="copyCodeButton">
+            📋 COPY CODE
+        </button>
+
+
+        <div class="playersTitle">
+            PLAYERS
+        </div>
+
+
+        <div
+            class="playersList"
+            id="playersList"
+        ></div>
+
+
+        <button
+            id="startMatchButton"
+            class="startMatchButton hidden"
+        >
+            🎮 START MATCH
+        </button>
+
+
+        <p
+            class="waitingText"
+            id="waitingText"
+        >
+            ⏳ Waiting for opponent...
+        </p>
+
+
+        <button
+            class="backButton"
+            id="backButton"
+        >
+            ← BACK
+        </button>
+
+    </div>
+
+
+
+    <!-- ========================================
+         JOIN LOBBY MENU
+    ========================================= -->
+
+    <div
+        class="menu hidden"
+        id="joinLobbyMenu"
+    >
+
+        <h1>
+            JOIN LOBBY
+        </h1>
+
+
+        <p class="subtitle">
+            Enter your opponent's lobby code
+        </p>
+
+
+        <input
+            type="text"
+            id="lobbyCodeInput"
+            placeholder="ENTER CODE"
+            maxlength="6"
+            autocomplete="off"
+        >
+
+
+        <button id="joinButton">
+            🔗 JOIN LOBBY
+        </button>
+
+
+        <p
+            class="joinMessage"
+            id="joinMessage"
+        ></p>
+
+
+        <button
+            class="backButton"
+            id="joinBackButton"
+        >
+            ← BACK
+        </button>
+
+    </div>
+
+
+
+    <!-- ========================================
+         GAME SCREEN
+    ========================================= -->
+
+    <div
+        id="gameScreen"
+        class="hidden"
+    >
+
+        <div id="gameTopBar">
+
+
+            <!-- PLAYER 1 NAME -->
+
+            <div id="playerOneHealth">
+                PLAYER 1
+            </div>
+
+
+            <!-- PLAYER 1 SCORE -->
+
+            <div id="playerOneScore">
+                0
+            </div>
+
+
+            <!-- CENTER STATUS -->
+
+            <div id="gameStatus">
+                FIGHT!
+            </div>
+
+
+            <!-- PLAYER 2 SCORE -->
+
+            <div id="playerTwoScore">
+                0
+            </div>
+
+
+            <!-- PLAYER 2 NAME -->
+
+            <div id="playerTwoHealth">
+                PLAYER 2
+            </div>
+
+        </div>
+
+
+        <canvas
+            id="gameCanvas"
+            width="1000"
+            height="650"
+        ></canvas>
+
+
+        <div id="controlsText">
+
+            WASD / ARROW KEYS = MOVE
+
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+            MOUSE = AIM
+
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+            LEFT CLICK = SHOOT
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================
+         SOCKET.IO
+    ========================================= -->
+
+    <script src="/socket.io/socket.io.js"></script>
+
+
+
+    <!-- ========================================
+         GAME JAVASCRIPT
+    ========================================= -->
+
+    <script src="game.js"></script>
+
+
+</body>
+
+</html>
